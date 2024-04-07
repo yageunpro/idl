@@ -1,0 +1,244 @@
+openapi: 3.1.0
+info:
+  title: Owl API
+  version: 0.0.1-alpha
+servers:
+- url: http://127.0.0.1:8000
+  description: dev server
+paths:
+  /auth/signup:
+    post:
+      tags:
+      - auth
+      summary: Auth Signup
+      description: "\uD68C\uC6D0\uAC00\uC785"
+      operationId: auth_signup_auth_signup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthSignUpRQ'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSignUpRO'
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+        '400':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrEmailDuplicated:
+                  summary: ErrEmailDuplicated
+                  description: default='When email is duplicated'
+                  value:
+                    errorId: ErrEmailDuplicated
+                    message: Detail information
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+  /auth/signin:
+    post:
+      tags:
+      - auth
+      summary: Auth Signin
+      description: "\uB85C\uADF8\uC778"
+      operationId: auth_signin_auth_signin_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthSignInRQ'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSignInRO'
+        '401':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrLoginValidation:
+                  summary: ErrLoginValidation
+                  description: default='When login information is not valid'
+                  value:
+                    errorId: ErrLoginValidation
+                    message: Detail information
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+components:
+  schemas:
+    AuthSignInRO:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+          description: user
+        refresh_token:
+          type: string
+          title: Refresh Token
+          description: user
+      type: object
+      required:
+      - access_token
+      - refresh_token
+      title: AuthSignInRO
+    AuthSignInRQ:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+          description: user email
+        password:
+          type: string
+          minLength: 6
+          title: Password
+          description: user password
+      type: object
+      required:
+      - email
+      - password
+      title: AuthSignInRQ
+    AuthSignUpRO:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+          description: access token
+        refresh_token:
+          type: string
+          title: Refresh Token
+          description: refresh token
+      type: object
+      required:
+      - access_token
+      - refresh_token
+      title: AuthSignUpRO
+    AuthSignUpRQ:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+          description: user email
+        password:
+          type: string
+          minLength: 6
+          title: Password
+          description: user password
+      type: object
+      required:
+      - email
+      - password
+      title: AuthSignUpRQ
+    ErrAuthFail:
+      properties:
+        errorId:
+          type: string
+          title: Errorid
+          examples:
+          - ErrDenied
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+          description: Extra Message
+          examples:
+          - Detail information
+      type: object
+      required:
+      - errorId
+      - message
+      title: ErrAuthFail
+      description: http code 401
+    ErrUnexpected:
+      properties:
+        errorId:
+          type: string
+          title: Errorid
+          examples:
+          - ErrUnexpected
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+          description: Extra Message
+          examples:
+          - Detail information
+      type: object
+      required:
+      - errorId
+      - message
+      title: ErrUnexpected
+      description: http code 500
+    ErrValidationFail:
+      properties:
+        errorId:
+          type: string
+          title: Errorid
+          examples:
+          - ErrValidationFail
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+          description: Extra Message
+          examples:
+          - Detail information
+      type: object
+      required:
+      - errorId
+      - message
+      title: ErrValidationFail
+      description: http code 422
+  securitySchemes:
+    AccessToken:
+      type: apiKey
+      in: header
+      name: access_token
+    RefreshToken:
+      type: apiKey
+      in: header
+      name: refresh_token
