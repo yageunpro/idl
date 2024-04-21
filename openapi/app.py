@@ -23,6 +23,8 @@ refreshToken = APIKeyHeader(name="refresh_token", scheme_name="RefreshToken")
 
 router = APIRouter(dependencies=[Depends(accessToken), Depends(refreshToken)])
 router.include_router(service.auth_router)
+router.include_router(service.appointment_router)
+router.include_router(service.calendar_router)
 
 app.include_router(router)
 
