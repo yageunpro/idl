@@ -1,7 +1,8 @@
 import dto.error as error
-from dto.request import AuthSignInRQ, AuthSignUpRQ
-from dto.response import AuthSignInRO, AuthSignUpRO
 from fastapi import APIRouter, responses
+
+from .request import AuthSignInRQ, AuthSignUpRQ
+from .response import AuthSignInRO, AuthSignUpRO
 
 router = APIRouter(
     prefix="/auth",

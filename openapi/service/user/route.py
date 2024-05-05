@@ -1,9 +1,9 @@
+from typing import Literal
 from uuid import UUID
 
-import dto.error as error
-from dto.request import AuthSignUpRQ
-from dto.response import UserAccountRO, UserMeRO
-from fastapi import APIRouter, responses
+from fastapi import APIRouter
+
+from .response import UserAccountRO, UserMeRO
 
 router = APIRouter(
     prefix="/user",
@@ -31,7 +31,7 @@ def user_account() -> UserAccountRO:
     "/account",
     description="계정 추가 연동",
 )
-def user_add_account():
+def user_add_account(type: Literal["naver", "google"]):
     pass
 
 

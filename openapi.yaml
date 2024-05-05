@@ -55,9 +55,6 @@ paths:
                   value:
                     errorId: ErrEmailDuplicated
                     message: Detail information
-      security:
-      - AccessToken: []
-      - RefreshToken: []
   /auth/signin:
     post:
       tags:
@@ -101,43 +98,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrUnexpected'
-      security:
-      - AccessToken: []
-      - RefreshToken: []
-  /auth/me:
-    get:
-      tags:
-      - auth
-      summary: Auth Me
-      description: "\uB0B4 \uC815\uBCF4 \uAC00\uC838\uC624\uAE30"
-      operationId: auth_me_auth_me_get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '401':
-          description: Authentication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrAuthFail'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
-      security:
-      - AccessToken: []
-      - RefreshToken: []
   /auth/oauth/naver:
     get:
       tags:
@@ -146,6 +106,15 @@ paths:
       description: "\uB124\uC774\uBC84 oauth request, \uC790\uB3D9 \uAC00\uC785 &\
         \ \uB85C\uADF8\uC778 \uCC98\uB9AC"
       operationId: auth_oauth_naver_auth_oauth_naver_get
+      parameters:
+      - name: ref
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ref
       responses:
         '307':
           description: Successful Response
@@ -167,9 +136,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrUnexpected'
-      security:
-      - AccessToken: []
-      - RefreshToken: []
   /auth/oauth/google:
     get:
       tags:
@@ -178,6 +144,15 @@ paths:
       description: "\uAD6C\uAE00 oauth request, \uC790\uB3D9 \uAC00\uC785 & \uB85C\
         \uADF8\uC778 \uCC98\uB9AC"
       operationId: auth_oauth_google_auth_oauth_google_get
+      parameters:
+      - name: ref
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ref
       responses:
         '307':
           description: Successful Response
@@ -199,16 +174,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrUnexpected'
-      security:
-      - AccessToken: []
-      - RefreshToken: []
   /auth/callback/naver:
     get:
       tags:
       - auth
       summary: Auth Callback Naver
-      description: "\uB124\uC774\uBC84 oauth callback"
+      description: "\uB124\uC774\uBC84 oauth callback (server-side)"
       operationId: auth_callback_naver_auth_callback_naver_get
+      parameters:
+      - name: code
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Code
+      - name: state
+        in: query
+        required: true
+        schema:
+          type: string
+          title: State
+      - name: error
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      - name: error_description
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Description
       responses:
         '307':
           description: Successful Response
@@ -230,275 +231,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrUnexpected'
-      security:
-      - AccessToken: []
-      - RefreshToken: []
   /auth/callback/google:
     get:
       tags:
       - auth
       summary: Auth Callback Google
-      description: "\uAD6C\uAE00 oauth callback"
+      description: "\uAD6C\uAE00 oauth callback (server-side)"
       operationId: auth_callback_google_auth_callback_google_get
       responses:
         '307':
           description: Successful Response
-        '401':
-          description: Authentication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrAuthFail'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
-      security:
-      - AccessToken: []
-      - RefreshToken: []
-  /appointment/{appointment_id}:
-    get:
-      tags:
-      - appointment
-      summary: Appointment Get
-      description: "\uC57D\uC18D \uC138\uBD80 \uC815\uBCF4 \uAC00\uC838\uC624\uAE30"
-      operationId: appointment_get_appointment__appointment_id__get
-      security:
-      - AccessToken: []
-      - RefreshToken: []
-      parameters:
-      - name: appointment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-          title: Appointment Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '401':
-          description: Authentication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrAuthFail'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
-    patch:
-      tags:
-      - appointment
-      summary: Appointment Patch
-      description: "\uC57D\uC18D \uC218\uC815 (\uCE74\uD14C\uACE0\uB9AC, \uC7A5\uC18C\
-        \ \uB4F1..)"
-      operationId: appointment_patch_appointment__appointment_id__patch
-      security:
-      - AccessToken: []
-      - RefreshToken: []
-      parameters:
-      - name: appointment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-          title: Appointment Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '401':
-          description: Authentication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrAuthFail'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
-  /appointment/{appointment_id}/share:
-    get:
-      tags:
-      - appointment
-      summary: Appointment Share
-      description: "\uC57D\uC18D \uACF5\uC720 \uAC00\uB2A5\uD55C \uC815\uBCF4 \uAC00\
-        \uC838\uC624\uAE30"
-      operationId: appointment_share_appointment__appointment_id__share_get
-      security:
-      - AccessToken: []
-      - RefreshToken: []
-      parameters:
-      - name: appointment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-          title: Appointment Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '401':
-          description: Authentication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrAuthFail'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
-  /appointment/{appointment_id}/join:
-    post:
-      tags:
-      - appointment
-      summary: Appointment Join
-      description: "\uC57D\uC18D \uCC38\uAC00"
-      operationId: appointment_join_appointment__appointment_id__join_post
-      security:
-      - AccessToken: []
-      - RefreshToken: []
-      parameters:
-      - name: appointment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-          title: Appointment Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '401':
-          description: Authentication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrAuthFail'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
-  /appointment/{appointment_id}/recommend:
-    get:
-      tags:
-      - appointment
-      summary: Appointment Get Recommend
-      description: "\uC57D\uC18D \uCD94\uCC9C \uC2DC\uAC04 \uAC00\uC838\uC624\uAE30"
-      operationId: appointment_get_recommend_appointment__appointment_id__recommend_get
-      security:
-      - AccessToken: []
-      - RefreshToken: []
-      parameters:
-      - name: appointment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-          title: Appointment Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '401':
-          description: Authentication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrAuthFail'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
-  /appointment/{appointment_id}/confirm:
-    post:
-      tags:
-      - appointment
-      summary: Appointment Confirm
-      description: "\uC57D\uC18D \uD655\uC815"
-      operationId: appointment_confirm_appointment__appointment_id__confirm_post
-      security:
-      - AccessToken: []
-      - RefreshToken: []
-      parameters:
-      - name: appointment_id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-          title: Appointment Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
         '401':
           description: Authentication Error
           content:
@@ -524,6 +266,12 @@ paths:
       summary: Appointment Add
       description: "\uC57D\uC18D \uCD94\uAC00"
       operationId: appointment_add_appointment_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentAddRQ'
+        required: true
       responses:
         '200':
           description: Successful Response
@@ -582,7 +330,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthSignUpRO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AbstractAppointment'
+                title: Response Appointment List Appointment List Get
         '401':
           description: Authentication Error
           content:
@@ -601,19 +352,335 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrUnexpected'
+  /appointment/{id}:
+    get:
+      tags:
+      - appointment
+      summary: Appointment Info
+      description: "\uC57D\uC18D \uC138\uBD80 \uC815\uBCF4 \uAC00\uC838\uC624\uAE30"
+      operationId: appointment_info_appointment__id__get
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentRO'
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+    patch:
+      tags:
+      - appointment
+      summary: Appointment Edit
+      description: "\uC57D\uC18D \uC218\uC815 (\uD0A4\uC6CC\uB4DC, \uC7A5\uC18C \uB4F1\
+        ..)"
+      operationId: appointment_edit_appointment__id__patch
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentEditRQ'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentRO'
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+        '400':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrAlreadyConfirmed:
+                  summary: ErrAlreadyConfirmed
+                  description: default='When appointment already confirmed'
+                  value:
+                    errorId: ErrAlreadyConfirmed
+                    message: Detail information
+  /appointment/{id}/share:
+    get:
+      tags:
+      - appointment
+      summary: Appointment Share Url
+      description: "\uC57D\uC18D \uACF5\uC720 URL \uAC00\uC838\uC624\uAE30"
+      operationId: appointment_share_url_appointment__id__share_get
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uri
+                minLength: 1
+                title: Response Appointment Share Url Appointment  Id  Share Get
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+  /appointment/{id}/join:
+    post:
+      tags:
+      - appointment
+      summary: Appointment Join
+      description: "\uC57D\uC18D \uCC38\uAC00"
+      operationId: appointment_join_appointment__id__join_post
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentRO'
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+        '400':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrAlreadyConfirmed:
+                  summary: ErrAlreadyConfirmed
+                  description: default='When appointment already confirmed'
+                  value:
+                    errorId: ErrAlreadyConfirmed
+                    message: Detail information
+  /appointment/{id}/recommend:
+    get:
+      tags:
+      - appointment
+      summary: Appointment Get Recommend
+      description: "\uC57D\uC18D \uCD94\uCC9C \uC2DC\uAC04 \uAC00\uC838\uC624\uAE30"
+      operationId: appointment_get_recommend_appointment__id__recommend_get
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: date-time
+                title: Response Appointment Get Recommend Appointment  Id  Recommend
+                  Get
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+        '400':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrAlreadyConfirmed:
+                  summary: ErrAlreadyConfirmed
+                  description: default='When appointment already confirmed'
+                  value:
+                    errorId: ErrAlreadyConfirmed
+                    message: Detail information
+  /appointment/{id}/confirm:
+    post:
+      tags:
+      - appointment
+      summary: Appointment Confirm
+      description: "\uC57D\uC18D \uD655\uC815"
+      operationId: appointment_confirm_appointment__id__confirm_post
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+        '400':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrAlreadyConfirmed:
+                  summary: ErrAlreadyConfirmed
+                  description: default='When appointment already confirmed'
+                  value:
+                    errorId: ErrAlreadyConfirmed
+                    message: Detail information
   /calendar/schedule:
     post:
       tags:
       - calendar
       summary: Calendar Schedule Add
-      description: "\uC218\uB3D9\uC73C\uB85C \uC77C\uC815 \uCD94\uAC00"
+      description: "\uC77C\uC815 \uCD94\uAC00"
       operationId: calendar_schedule_add_calendar_schedule_post
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Schedule'
         '401':
           description: Authentication Error
           content:
@@ -635,14 +702,47 @@ paths:
       security:
       - AccessToken: []
       - RefreshToken: []
-  /calendar/check:
+  /calendar/schedule/{id}:
     get:
       tags:
       - calendar
-      summary: Calendar Check
-      description: "\uD604\uC7AC \uCE98\uB9B0\uB354 \uACC4\uC815 \uC5F0\uB3D9 \uC0C1\
-        \uD0DC \uCCB4\uD06C"
-      operationId: calendar_check_calendar_check_get
+      summary: Calendar Schedule Info
+      description: "\uC77C\uC815 \uC138\uBD80 \uC815\uBCF4"
+      operationId: calendar_schedule_info_calendar_schedule__id__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+    delete:
+      tags:
+      - calendar
+      summary: Calendar Schedule Delete
+      description: "\uC77C\uC815 \uC0AD\uC81C"
+      operationId: calendar_schedule_delete_calendar_schedule__id__delete
       responses:
         '200':
           description: Successful Response
@@ -670,12 +770,65 @@ paths:
       security:
       - AccessToken: []
       - RefreshToken: []
+  /calendar/schedule/list:
+    get:
+      tags:
+      - calendar
+      summary: Calendar Schedule List
+      description: "\uC804\uCCB4 \uC77C\uC815 \uB9AC\uC2A4\uD2B8"
+      operationId: calendar_schedule_list_calendar_schedule_list_get
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AbstractSchedule'
+                title: Response Calendar Schedule List Calendar Schedule List Get
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
   /calendar/sync:
     post:
       tags:
       - calendar
       summary: Calendar Sync
-      description: "\uC218\uB3D9\uC73C\uB85C \uACC4\uC815 \uC77C\uC815 \uC5C5\uB370\
+      description: "\uC218\uB3D9\uC73C\uB85C \uC5F0\uB3D9 \uACC4\uC815 \uC5C5\uB370\
         \uC774\uD2B8 \uC694\uCCAD"
       operationId: calendar_sync_calendar_sync_post
       responses:
@@ -705,19 +858,20 @@ paths:
       security:
       - AccessToken: []
       - RefreshToken: []
-  /calendar/account:
+  /user/me:
     get:
       tags:
-      - calendar
-      summary: Calendar Account
-      description: "\uC5F0\uB3D9\uB41C \uACC4\uC815 \uB9AC\uC2A4\uD2B8"
-      operationId: calendar_account_calendar_account_get
+      - user
+      summary: User Me
+      description: "\uB0B4 \uC815\uBCF4 \uAC00\uC838\uC624\uAE30"
+      operationId: user_me_user_me_get
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/UserMeRO'
         '401':
           description: Authentication Error
           content:
@@ -739,12 +893,60 @@ paths:
       security:
       - AccessToken: []
       - RefreshToken: []
+  /user/account:
+    get:
+      tags:
+      - user
+      summary: User Account
+      description: "\uC5F0\uB3D9\uB41C \uACC4\uC815 \uAC00\uC838\uC624\uAE30"
+      operationId: user_account_user_account_get
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccountRO'
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
     post:
       tags:
-      - calendar
-      summary: Calendar Account Add
+      - user
+      summary: User Add Account
       description: "\uACC4\uC815 \uCD94\uAC00 \uC5F0\uB3D9"
-      operationId: calendar_account_add_calendar_account_post
+      operationId: user_add_account_user_account_post
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: type
+        in: query
+        required: true
+        schema:
+          enum:
+          - naver
+          - google
+          type: string
+          title: Type
       responses:
         '200':
           description: Successful Response
@@ -769,11 +971,331 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrUnexpected'
+  /user/account/{id}:
+    post:
+      tags:
+      - user
+      summary: User Verify Account
+      description: "\uACC4\uC815 \uC7AC\uC778\uC99D"
+      operationId: user_verify_account_user_account__id__post
       security:
       - AccessToken: []
       - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+    delete:
+      tags:
+      - user
+      summary: User Delete Account
+      description: "\uACC4\uC815 \uC5F0\uB3D9 \uD574\uC81C"
+      operationId: user_delete_account_user_account__id__delete
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
 components:
   schemas:
+    AbstractAppointment:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: "\uC57D\uC18D \uC774\uB984"
+        locaction:
+          type: string
+          title: Locaction
+          description: "\uAC04\uB7B5\uD55C \uC7A5\uC18C \uC815\uBCF4"
+        headcount:
+          type: integer
+          title: Headcount
+          description: "\uCC38\uAC00\uD558\uB294 \uC778\uC6D0 \uC218"
+        status:
+          type: string
+          enum:
+          - PROGRESS
+          - CONFIRM
+          title: Status
+          description: "\uC57D\uC18D \uC0C1\uD0DC"
+        time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Time
+          description: "\uD655\uC815 \uC2DC\uAC04, \uD655\uC815\uC2DC\uC5D0\uB9CC\
+            \ \uB098\uC634"
+      type: object
+      required:
+      - title
+      - locaction
+      - headcount
+      - status
+      - time
+      title: AbstractAppointment
+    AbstractSchedule:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: "\uC77C\uC815 \uC774\uB984"
+        time:
+          type: string
+          format: date-time
+          title: Time
+          description: "\uC77C\uC815 \uC2DC\uAC04"
+      type: object
+      required:
+      - title
+      - time
+      title: AbstractSchedule
+    Account:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: "\uACC4\uC815 \uC2DD\uBCC4\uC790"
+        type:
+          type: string
+          enum:
+          - NAVER
+          - GOOGLE
+          - ETC
+          title: Type
+          description: "\uACC4\uC815 \uC885\uB958 [\uB124\uC774\uBC84, \uAD6C\uAE00\
+            , \uAE30\uD0C0]"
+        email:
+          type: string
+          format: email
+          title: Email
+          description: "\uACC4\uC815 \uC774\uBA54\uC77C"
+        status:
+          type: string
+          enum:
+          - VALID
+          - INVALID
+          title: Status
+          description: "\uACC4\uC815 \uC0C1\uD0DC"
+      type: object
+      required:
+      - id
+      - type
+      - email
+      - status
+      title: Account
+    AppointmentAddRQ:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: "\uC57D\uC18D \uC774\uB984"
+          examples:
+          - "\uC57D\uC18D \uC608\uC81C"
+        description:
+          type: string
+          title: Description
+          description: "\uC57D\uC18D \uC124\uBA85"
+          examples:
+          - "\uBB54\uAC00 \uC5C4\uCCAD\uB09C \uC124\uBA85"
+        location:
+          anyOf:
+          - $ref: '#/components/schemas/Location'
+          - type: 'null'
+          description: "\uC7A5\uC18C"
+        keywordList:
+          items:
+            type: string
+          type: array
+          title: Keywordlist
+          description: "\uD0A4\uC6CC\uB4DC"
+          examples:
+          - - "\uD648\uD30C\uD2F0"
+            - "\uC220"
+            - "\uACE0\uAE30!"
+        deadline:
+          type: string
+          format: date-time
+          title: Deadline
+          description: "\uB9C8\uAC10\uC2DC\uAC04"
+      type: object
+      required:
+      - title
+      - description
+      - location
+      - keywordList
+      - deadline
+      title: AppointmentAddRQ
+    AppointmentEditRQ:
+      properties:
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+          description: "\uC57D\uC18D \uC774\uB984"
+          examples:
+          - "\uC57D\uC18D \uC81C\uBAA9 \uC218\uC815"
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: "\uC57D\uC18D \uC124\uBA85"
+          examples:
+          - "\uC124\uBA85 \uC218\uC815"
+        location:
+          anyOf:
+          - $ref: '#/components/schemas/Location'
+          - type: 'null'
+          description: "\uC7A5\uC18C"
+        keywordList:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Keywordlist
+          description: "\uD0A4\uC6CC\uB4DC"
+          examples:
+          - - "\uD0A4\uC6CC\uB4DC"
+            - "\uC218\uC815"
+            - "\uC804\uCCB4\uBCF4\uB0B4\uAE30"
+      type: object
+      required:
+      - title
+      - description
+      - location
+      - keywordList
+      title: AppointmentEditRQ
+    AppointmentRO:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: "\uC57D\uC18D \uC2DD\uBCC4\uC790"
+        title:
+          type: string
+          title: Title
+          description: "\uC57D\uC18D \uC774\uB984"
+          examples:
+          - "\uC57D\uC18D \uC608\uC81C"
+        description:
+          type: string
+          title: Description
+          description: "\uC57D\uC18D \uC124\uBA85"
+          examples:
+          - "\uBB54\uAC00 \uC5C4\uCCAD\uB09C \uC124\uBA85"
+        location:
+          allOf:
+          - $ref: '#/components/schemas/Location'
+          description: "\uC7A5\uC18C"
+        keywordList:
+          items:
+            type: string
+          type: array
+          title: Keywordlist
+          description: "\uD0A4\uC6CC\uB4DC"
+          examples:
+          - - "\uD648\uD30C\uD2F0"
+            - "\uC220"
+            - "\uACE0\uAE30!"
+        participantList:
+          items:
+            type: string
+          type: array
+          title: Participantlist
+          description: "\uCC38\uAC00\uC790 \uB9AC\uC2A4\uD2B8"
+          examples:
+          - - "\uD64D\uAE38\uB3D9"
+            - "\uAE40\uC544\uBB34\uAC1C"
+        status:
+          type: string
+          enum:
+          - PROGRESS
+          - CONFIRM
+          title: Status
+          description: "\uC57D\uC18D \uC0C1\uD0DC"
+        time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Time
+          description: "\uD655\uC815\uB41C \uC2DC\uAC04, CONFIRM \uC0C1\uD0DC\uC5D0\
+            \uB9CC \uC874\uC7AC"
+      type: object
+      required:
+      - id
+      - title
+      - description
+      - location
+      - keywordList
+      - participantList
+      - status
+      - time
+      title: AppointmentRO
     AuthSignInRO:
       properties:
         access_token:
@@ -901,6 +1423,79 @@ components:
       - message
       title: ErrValidationFail
       description: http code 422
+    Location:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: "\uC7A5\uC18C \uC8FC\uC18C"
+      type: object
+      required:
+      - address
+      title: Location
+    Schedule:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: "\uC77C\uC815 \uC2DD\uBCC4\uC790"
+        title:
+          type: string
+          title: Title
+          description: "\uC77C\uC815 \uC774\uB984"
+        startTime:
+          type: string
+          format: date-time
+          title: Starttime
+          description: "\uC2DC\uC791\uC2DC\uAC04"
+        endTime:
+          type: string
+          format: date-time
+          title: Endtime
+          description: "\uC644\uB8CC\uC2DC\uAC04"
+      type: object
+      required:
+      - id
+      - title
+      - startTime
+      - endTime
+      title: Schedule
+    UserAccountRO:
+      properties:
+        accountList:
+          items:
+            $ref: '#/components/schemas/Account'
+          type: array
+          title: Accountlist
+          description: "\uC5F0\uB3D9\uB41C \uACC4\uC815"
+      type: object
+      required:
+      - accountList
+      title: UserAccountRO
+    UserMeRO:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: "\uC720\uC800 \uC2DD\uBCC4\uC790"
+        username:
+          type: string
+          title: Username
+          description: "\uC774\uB984"
+        email:
+          type: string
+          format: email
+          title: Email
+          description: "\uACC4\uC815 \uB300\uD45C \uC774\uBA54\uC77C (\uAC00\uC785\
+            \uC2DC \uC774\uBA54\uC77C)"
+      type: object
+      required:
+      - id
+      - username
+      - email
+      title: UserMeRO
   securitySchemes:
     AccessToken:
       type: apiKey
