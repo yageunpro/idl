@@ -27,17 +27,12 @@ def auth_signin(req: AuthSignInRQ) -> AuthSignInRO:
     pass
 
 
-@router.get("/me", description="내 정보 가져오기")
-def auth_me():
-    pass
-
-
 @router.get(
     "/oauth/naver",
     description="네이버 oauth request, 자동 가입 & 로그인 처리",
     response_class=responses.RedirectResponse,
 )
-def auth_oauth_naver():
+def auth_oauth_naver(ref: str | None = None):
     pass
 
 
@@ -46,22 +41,28 @@ def auth_oauth_naver():
     description="구글 oauth request, 자동 가입 & 로그인 처리",
     response_class=responses.RedirectResponse,
 )
-def auth_oauth_google():
+def auth_oauth_google(ref: str | None = None):
     pass
 
 
 @router.get(
     "/callback/naver",
-    description="네이버 oauth callback",
+    description="네이버 oauth callback (server-side)",
     response_class=responses.RedirectResponse,
 )
-def auth_callback_naver():
+def auth_callback_naver(
+    code: str,
+    state: str,
+    error: str | None = None,
+    error_description: str | None = None,
+):
+    # https://developers.naver.com/docs/login/devguide/devguide.md#3-4-3-%EB%84%A4%EC%9D%B4%EB%B2%84-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%97%B0%EB%8F%99-%EA%B2%B0%EA%B3%BC-callback-%EC%A0%95%EB%B3%B4
     pass
 
 
 @router.get(
     "/callback/google",
-    description="구글 oauth callback",
+    description="구글 oauth callback (server-side)",
     response_class=responses.RedirectResponse,
 )
 def auth_callback_google():

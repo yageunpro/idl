@@ -21,12 +21,15 @@ app = FastAPI(
 accessToken = APIKeyHeader(name="access_token", scheme_name="AccessToken")
 refreshToken = APIKeyHeader(name="refresh_token", scheme_name="RefreshToken")
 
-router = APIRouter(dependencies=[Depends(accessToken), Depends(refreshToken)])
-router.include_router(service.auth_router)
-router.include_router(service.appointment_router)
-router.include_router(service.calendar_router)
 
-app.include_router(router)
+app.include_router(service.auth_router)
+
+secure_router = APIRouter(dependencies=[Depends(accessToken), Depends(refreshToken)])
+secure_router.include_router(service.appointment_router)
+secure_router.include_router(service.calendar_router)
+secure_router.include_router(service.user_router)
+
+app.include_router(secure_router)
 
 
 @app.get("/", include_in_schema=False)
