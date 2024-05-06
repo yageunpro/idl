@@ -6,98 +6,6 @@ servers:
 - url: http://127.0.0.1:8000
   description: dev server
 paths:
-  /auth/signup:
-    post:
-      tags:
-      - auth
-      summary: Auth Signup
-      description: "\uD68C\uC6D0\uAC00\uC785"
-      operationId: auth_signup_auth_signup_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthSignUpRQ'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthSignUpRO'
-        '401':
-          description: Authentication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrAuthFail'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
-        '400':
-          description: Multiple Errors
-          content:
-            application/json:
-              examples:
-                ErrEmailDuplicated:
-                  summary: ErrEmailDuplicated
-                  description: default='When email is duplicated'
-                  value:
-                    errorId: ErrEmailDuplicated
-                    message: Detail information
-  /auth/signin:
-    post:
-      tags:
-      - auth
-      summary: Auth Signin
-      description: "\uB85C\uADF8\uC778"
-      operationId: auth_signin_auth_signin_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthSignInRQ'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthSignInRO'
-        '401':
-          description: Multiple Errors
-          content:
-            application/json:
-              examples:
-                ErrLoginValidation:
-                  summary: ErrLoginValidation
-                  description: default='When login information is not valid'
-                  value:
-                    errorId: ErrLoginValidation
-                    message: Detail information
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrValidationFail'
-        '500':
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrUnexpected'
   /auth/oauth/naver:
     get:
       tags:
@@ -247,6 +155,98 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+  /auth/dev/signup:
+    post:
+      tags:
+      - auth
+      summary: Auth Signup
+      description: "\uD68C\uC6D0\uAC00\uC785"
+      operationId: auth_signup_auth_dev_signup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthSignUpRQ'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSignUpRO'
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+        '400':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrEmailDuplicated:
+                  summary: ErrEmailDuplicated
+                  description: default='When email is duplicated'
+                  value:
+                    errorId: ErrEmailDuplicated
+                    message: Detail information
+  /auth/dev/signin:
+    post:
+      tags:
+      - auth
+      summary: Auth Signin
+      description: "\uB85C\uADF8\uC778"
+      operationId: auth_signin_auth_dev_signin_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthSignInRQ'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSignInRO'
+        '401':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrLoginValidation:
+                  summary: ErrLoginValidation
+                  description: default='When login information is not valid'
+                  value:
+                    errorId: ErrLoginValidation
+                    message: Detail information
         '422':
           description: Validation Error
           content:

@@ -10,24 +10,6 @@ router = APIRouter(
 )
 
 
-@router.post(
-    "/signup",
-    description="회원가입",
-    responses={400: error.merge_errs(error.ErrEmailDuplicated)},
-)
-def auth_signup(req: AuthSignUpRQ) -> AuthSignUpRO:
-    pass
-
-
-@router.post(
-    "/signin",
-    description="로그인",
-    responses={401: error.merge_errs(error.ErrLoginValidation)},
-)
-def auth_signin(req: AuthSignInRQ) -> AuthSignInRO:
-    pass
-
-
 @router.get(
     "/oauth/naver",
     description="네이버 oauth request, 자동 가입 & 로그인 처리",
@@ -49,7 +31,7 @@ def auth_oauth_google(ref: str | None = None):
 @router.get(
     "/callback/naver",
     description="네이버 oauth callback (server-side)",
-    response_class=responses.RedirectResponse,
+    response_class=responses.RedirectResponse,  # accessToken / refreshToken Header 로 추가하기
 )
 def auth_callback_naver(
     code: str,
@@ -64,7 +46,25 @@ def auth_callback_naver(
 @router.get(
     "/callback/google",
     description="구글 oauth callback (server-side)",
-    response_class=responses.RedirectResponse,
+    response_class=responses.RedirectResponse,  # accessToken / refreshToken Header 로 추가하기
 )
 def auth_callback_google():
+    pass
+
+
+@router.post(
+    "/dev/signup",
+    description="회원가입",
+    responses={400: error.merge_errs(error.ErrEmailDuplicated)},
+)
+def auth_signup(req: AuthSignUpRQ) -> AuthSignUpRO:
+    pass
+
+
+@router.post(
+    "/dev/signin",
+    description="로그인",
+    responses={401: error.merge_errs(error.ErrLoginValidation)},
+)
+def auth_signin(req: AuthSignInRQ) -> AuthSignInRO:
     pass
