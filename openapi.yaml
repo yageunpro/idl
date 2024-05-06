@@ -803,7 +803,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AbstractSchedule'
+                  $ref: '#/components/schemas/Schedule'
                 title: Response Calendar Schedule List Calendar Schedule List Get
         '401':
           description: Authentication Error
@@ -1058,6 +1058,11 @@ components:
   schemas:
     AbstractAppointment:
       properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: "\uC57D\uC18D \uC2DD\uBCC4\uC790"
         title:
           type: string
           title: Title
@@ -1087,28 +1092,13 @@ components:
             \ \uB098\uC634"
       type: object
       required:
+      - id
       - title
       - locaction
       - headcount
       - status
       - time
       title: AbstractAppointment
-    AbstractSchedule:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: "\uC77C\uC815 \uC774\uB984"
-        time:
-          type: string
-          format: date-time
-          title: Time
-          description: "\uC77C\uC815 \uC2DC\uAC04"
-      type: object
-      required:
-      - title
-      - time
-      title: AbstractSchedule
     Account:
       properties:
         id:
