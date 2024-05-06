@@ -474,6 +474,47 @@ paths:
                   value:
                     errorId: ErrAlreadyConfirmed
                     message: Detail information
+    delete:
+      tags:
+      - appointment
+      summary: Appointment Delete
+      description: "\uC57D\uC18D \uC0AD\uC81C"
+      operationId: appointment_delete_appointment__id__delete
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
   /appointment/{id}/share:
     get:
       tags:
@@ -538,6 +579,66 @@ paths:
           type: string
           format: uuid
           title: Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentRO'
+        '401':
+          description: Authentication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrAuthFail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrValidationFail'
+        '500':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrUnexpected'
+        '400':
+          description: Multiple Errors
+          content:
+            application/json:
+              examples:
+                ErrAlreadyConfirmed:
+                  summary: ErrAlreadyConfirmed
+                  description: default='When appointment already confirmed'
+                  value:
+                    errorId: ErrAlreadyConfirmed
+                    message: Detail information
+  /appointment/{id}/join/nonmember:
+    post:
+      tags:
+      - appointment
+      summary: Appointment Join Nonmember
+      description: "\uC57D\uC18D \uCC38\uAC00"
+      operationId: appointment_join_nonmember_appointment__id__join_nonmember_post
+      security:
+      - AccessToken: []
+      - RefreshToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentJoinNonmember'
       responses:
         '200':
           description: Successful Response
@@ -651,6 +752,12 @@ paths:
           type: string
           format: uuid
           title: Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentConfirm'
       responses:
         '200':
           description: Successful Response
@@ -1190,6 +1297,17 @@ components:
       - location
       - keywordList
       title: AppointmentAddRQ
+    AppointmentConfirm:
+      properties:
+        time:
+          type: string
+          format: date-time
+          title: Time
+          description: "\uD655\uC815\uB0A0\uC9DC"
+      type: object
+      required:
+      - time
+      title: AppointmentConfirm
     AppointmentEditRQ:
       properties:
         title:
@@ -1232,6 +1350,23 @@ components:
       - location
       - keywordList
       title: AppointmentEditRQ
+    AppointmentJoinNonmember:
+      properties:
+        username:
+          type: string
+          title: Username
+          description: "\uC774\uB984"
+        scheduleList:
+          items:
+            $ref: '#/components/schemas/Schedule'
+          type: array
+          title: Schedulelist
+          description: "\uC77C\uC815 \uB9AC\uC2A4\uD2B8"
+      type: object
+      required:
+      - username
+      - scheduleList
+      title: AppointmentJoinNonmember
     AppointmentRO:
       properties:
         id:

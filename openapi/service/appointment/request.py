@@ -1,4 +1,6 @@
-from dto.common import Location
+from datetime import datetime
+
+from dto.common import Location, Schedule
 from pydantic import BaseModel, Field
 
 
@@ -18,3 +20,12 @@ class AppointmentEditRQ(BaseModel):
     keywordList: list[str] | None = Field(
         description="키워드", examples=[["키워드", "수정", "전체보내기"]]
     )
+
+
+class AppointmentJoinNonmember(BaseModel):
+    username: str = Field(description="이름")
+    scheduleList: list[Schedule] = Field(description="일정 리스트")
+
+
+class AppointmentConfirm(BaseModel):
+    time: datetime = Field(description="확정날짜")

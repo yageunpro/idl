@@ -7,7 +7,12 @@ from fastapi import APIRouter
 from pydantic import AnyHttpUrl
 
 from .error import ErrAlreadyConfirmed
-from .request import AppointmentAddRQ, AppointmentEditRQ
+from .request import (
+    AppointmentAddRQ,
+    AppointmentConfirm,
+    AppointmentEditRQ,
+    AppointmentJoinNonmember,
+)
 from .response import AppointmentListRO, AppointmentRO
 
 router = APIRouter(
@@ -58,12 +63,28 @@ def appointment_share_url(id: UUID) -> AnyHttpUrl:
     pass
 
 
+@router.delete("/{id}", description="약속 삭제")
+def appointment_delete(id: UUID):
+    pass
+
+
 @router.post(
     "/{id}/join",
     description="약속 참가",
     responses={400: merge_errs(ErrAlreadyConfirmed)},
 )
 def appointment_join(id: UUID) -> AppointmentRO:
+    pass
+
+
+@router.post(
+    "/{id}/join/nonmember",
+    description="약속 참가",
+    responses={400: merge_errs(ErrAlreadyConfirmed)},
+)
+def appointment_join_nonmember(
+    id: UUID, req: AppointmentJoinNonmember
+) -> AppointmentRO:
     pass
 
 
@@ -81,5 +102,5 @@ def appointment_get_recommend(id: UUID) -> list[datetime]:
     description="약속 확정",
     responses={400: merge_errs(ErrAlreadyConfirmed)},
 )
-def appointment_confirm(id: UUID):
+def appointment_confirm(id: UUID, req: AppointmentConfirm):
     pass
