@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from dto.common import Location
 from pydantic import BaseModel, Field
 
@@ -11,7 +9,6 @@ class AppointmentAddRQ(BaseModel):
     keywordList: list[str] = Field(
         description="키워드", examples=[["홈파티", "술", "고기!"]]
     )
-    deadline: datetime = Field(description="마감시간")
 
 
 class AppointmentEditRQ(BaseModel):

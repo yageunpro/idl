@@ -18,6 +18,9 @@ class Location(BaseModel):
     address: str = Field(description="장소 주소")
 
 
+AppointmentStatus = Literal["DRAFT", "CONFIRM", "CANCEL"]
+
+
 class Appointment(BaseModel):
     id: UUID = Field(description="약속 식별자")
     title: str = Field(description="약속 이름", examples=["약속 예제"])
@@ -29,7 +32,7 @@ class Appointment(BaseModel):
     participantList: list[str] = Field(
         description="참가자 리스트", examples=[["홍길동", "김아무개"]]
     )
-    status: Literal["PROGRESS", "CONFIRM"] = Field(description="약속 상태")
+    status: AppointmentStatus = Field(description="약속 상태")
     time: datetime | None = Field(description="확정된 시간, CONFIRM 상태에만 존재")
 
 

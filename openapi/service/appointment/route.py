@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 from uuid import UUID
 
 from dto.error import merge_errs
@@ -20,8 +21,21 @@ def appointment_add(req: AppointmentAddRQ):
     pass
 
 
-@router.get("/list", description="약속 list")
-def appointment_list(page: int = 1, limit: int = 10) -> AppointmentListRO:
+@router.get(
+    "/list",
+    description="""
+            약속 list\n
+            [삭제 약속은 보이지 않음]\n
+            정렬 순서: 미확정 / 확정 순서대로\n
+            완료 기준: time (확정시간) 기준 오늘 이전 날짜[KST]\n
+            [미확정]: created_at 기준 가장 최근에 만든 약속이 맨위로\n
+            [확정]: time (확정시간) 기준 임박한 약속부터\n
+            [완료]: time (확정시간) 기준 마지막에 수행한 약속부터\n
+            """,
+)
+def appointment_list(
+    type: Literal["draft", "confirm", "past"], page: int = 1, limit: int = 10
+) -> AppointmentListRO:
     pass
 
 
