@@ -1565,13 +1565,30 @@ components:
       description: http code 422
     Location:
       properties:
+        title:
+          type: string
+          title: Title
+          description: "\uC7A5\uC18C \uC774\uB984"
         address:
           type: string
           title: Address
           description: "\uC7A5\uC18C \uC8FC\uC18C"
+        category:
+          type: string
+          title: Category
+          description: "\uC7A5\uC18C \uCE74\uD14C\uACE0\uB9AC"
+        position:
+          items:
+            type: integer
+          type: array
+          title: Position
+          description: "\uC7A5\uC18C mapx, mapy"
       type: object
       required:
+      - title
       - address
+      - category
+      - position
       title: Location
     Schedule:
       properties:

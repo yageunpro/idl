@@ -15,7 +15,10 @@ class Account(BaseModel):
 
 
 class Location(BaseModel):
+    title: str = Field(description="장소 이름")
     address: str = Field(description="장소 주소")
+    category: str = Field(description="장소 카테고리")
+    position: list[int] = Field(description="장소 mapx, mapy")
 
 
 AppointmentStatus = Literal["DRAFT", "CONFIRM", "CANCEL"]
