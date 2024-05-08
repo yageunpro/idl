@@ -909,6 +909,22 @@ paths:
       - AccessToken: []
       - RefreshToken: []
       parameters:
+      - name: start
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+          default: '2024-05-08T15:49:03.282120'
+          title: Start
+      - name: end
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+          default: '2025-05-08T15:49:03.282125'
+          title: End
       - name: page
         in: query
         required: false

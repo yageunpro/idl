@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import dto.error as error
 from fastapi import APIRouter, responses
 
@@ -25,7 +27,12 @@ def calendar_schedule_delete():
 
 
 @router.get("/schedule/list", description="전체 일정 리스트")
-def calendar_schedule_list(page: int = 1, limit: int = 10) -> ScheduleListRO:
+def calendar_schedule_list(
+    start: datetime = datetime.now(),
+    end: datetime = datetime.now() + timedelta(days=365),
+    page: int = 1,
+    limit: int = 10,
+) -> ScheduleListRO:
     pass
 
 
