@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Literal
 from uuid import UUID
 
+from dto.common import AppointmentStatus
 from dto.error import merge_errs
 from fastapi import APIRouter
 from pydantic import AnyHttpUrl
@@ -39,7 +39,9 @@ def appointment_add(req: AppointmentAddRQ):
             """,
 )
 def appointment_list(
-    type: Literal["draft", "confirm", "past"], page: int = 1, limit: int = 10
+    type: AppointmentStatus,
+    page: int = 1,
+    limit: int = 10,
 ) -> AppointmentListRO:
     pass
 

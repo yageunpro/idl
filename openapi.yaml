@@ -324,9 +324,11 @@ paths:
         required: true
         schema:
           enum:
-          - draft
-          - confirm
-          - past
+          - DRAFT
+          - CONFIRM
+          - DONE
+          - CANCEL
+          - DELETE
           type: string
           title: Type
       - name: page
@@ -1206,7 +1208,9 @@ components:
           enum:
           - DRAFT
           - CONFIRM
+          - DONE
           - CANCEL
+          - DELETE
           title: Status
           description: "\uC57D\uC18D \uC0C1\uD0DC"
         confirmTime:
@@ -1428,7 +1432,9 @@ components:
           enum:
           - DRAFT
           - CONFIRM
+          - DONE
           - CANCEL
+          - DELETE
           title: Status
           description: "\uC57D\uC18D \uC0C1\uD0DC"
         startTime:

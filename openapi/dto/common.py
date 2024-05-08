@@ -21,7 +21,7 @@ class Location(BaseModel):
     position: list[int] = Field(description="장소 mapx, mapy")
 
 
-AppointmentStatus = Literal["DRAFT", "CONFIRM", "CANCEL"]
+AppointmentStatus = Literal["DRAFT", "CONFIRM", "DONE", "CANCEL", "DELETE"]
 
 
 class Appointment(BaseModel):
