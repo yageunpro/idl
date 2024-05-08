@@ -36,7 +36,11 @@ class Appointment(BaseModel):
         description="참가자 리스트", examples=[["홍길동", "김아무개"]]
     )
     status: AppointmentStatus = Field(description="약속 상태")
-    time: datetime | None = Field(description="확정된 시간, CONFIRM 상태에만 존재")
+    startTime: datetime = Field(description="시작시간")
+    endTime: datetime = Field(description="끝나는 시간")
+    confirmTime: datetime | None = Field(
+        description="최종 확정된 시간, CONFIRM 상태에만 존재"
+    )
 
 
 class Schedule(BaseModel):

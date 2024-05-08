@@ -15,7 +15,9 @@ class AbstractAppointment(BaseModel):
     locaction: str = Field(description="간략한 장소 정보")
     headcount: int = Field(description="참가하는 인원 수")
     status: AppointmentStatus = Field(description="약속 상태")
-    time: datetime | None = Field(description="확정 시간, 확정시에만 나옴")
+    confirmTime: datetime | None = Field(
+        description="최종 확정된 시간, CONFIRM 상태에만 존재"
+    )
 
 
 AppointmentListRO = list[AbstractAppointment]

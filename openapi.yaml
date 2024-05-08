@@ -1209,14 +1209,14 @@ components:
           - CANCEL
           title: Status
           description: "\uC57D\uC18D \uC0C1\uD0DC"
-        time:
+        confirmTime:
           anyOf:
           - type: string
             format: date-time
           - type: 'null'
-          title: Time
-          description: "\uD655\uC815 \uC2DC\uAC04, \uD655\uC815\uC2DC\uC5D0\uB9CC\
-            \ \uB098\uC634"
+          title: Confirmtime
+          description: "\uCD5C\uC885 \uD655\uC815\uB41C \uC2DC\uAC04, CONFIRM \uC0C1\
+            \uD0DC\uC5D0\uB9CC \uC874\uC7AC"
       type: object
       required:
       - id
@@ -1224,7 +1224,7 @@ components:
       - locaction
       - headcount
       - status
-      - time
+      - confirmTime
       title: AbstractAppointment
     Account:
       properties:
@@ -1290,12 +1290,26 @@ components:
           - - "\uD648\uD30C\uD2F0"
             - "\uC220"
             - "\uACE0\uAE30!"
+        startTime:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Starttime
+          description: "\uC2DC\uC791\uC2DC\uAC04"
+        endTime:
+          type: string
+          format: date-time
+          title: Endtime
+          description: "\uB05D\uB098\uB294 \uC2DC\uAC04"
       type: object
       required:
       - title
       - description
       - location
       - keywordList
+      - startTime
+      - endTime
       title: AppointmentAddRQ
     AppointmentConfirm:
       properties:
@@ -1417,14 +1431,24 @@ components:
           - CANCEL
           title: Status
           description: "\uC57D\uC18D \uC0C1\uD0DC"
-        time:
+        startTime:
+          type: string
+          format: date-time
+          title: Starttime
+          description: "\uC2DC\uC791\uC2DC\uAC04"
+        endTime:
+          type: string
+          format: date-time
+          title: Endtime
+          description: "\uB05D\uB098\uB294 \uC2DC\uAC04"
+        confirmTime:
           anyOf:
           - type: string
             format: date-time
           - type: 'null'
-          title: Time
-          description: "\uD655\uC815\uB41C \uC2DC\uAC04, CONFIRM \uC0C1\uD0DC\uC5D0\
-            \uB9CC \uC874\uC7AC"
+          title: Confirmtime
+          description: "\uCD5C\uC885 \uD655\uC815\uB41C \uC2DC\uAC04, CONFIRM \uC0C1\
+            \uD0DC\uC5D0\uB9CC \uC874\uC7AC"
       type: object
       required:
       - id
@@ -1434,7 +1458,9 @@ components:
       - keywordList
       - participantList
       - status
-      - time
+      - startTime
+      - endTime
+      - confirmTime
       title: AppointmentRO
     AuthSignInRO:
       properties:

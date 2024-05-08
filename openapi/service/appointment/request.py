@@ -11,6 +11,8 @@ class AppointmentAddRQ(BaseModel):
     keywordList: list[str] = Field(
         description="키워드", examples=[["홈파티", "술", "고기!"]]
     )
+    startTime: datetime | None = Field(description="시작시간")
+    endTime: datetime = Field(description="끝나는 시간")
 
 
 class AppointmentEditRQ(BaseModel):
