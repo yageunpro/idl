@@ -915,7 +915,7 @@ paths:
         schema:
           type: string
           format: date-time
-          default: '2024-05-08T15:49:03.282120'
+          default: '2024-05-13T15:01:54.580311'
           title: Start
       - name: end
         in: query
@@ -923,7 +923,7 @@ paths:
         schema:
           type: string
           format: date-time
-          default: '2025-05-08T15:49:03.282125'
+          default: '2025-05-13T15:01:54.580315'
           title: End
       - name: page
         in: query
@@ -1311,10 +1311,8 @@ components:
             - "\uC220"
             - "\uACE0\uAE30!"
         startTime:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
+          type: string
+          format: date-time
           title: Starttime
           description: "\uC2DC\uC791\uC2DC\uAC04"
         endTime:
