@@ -31,7 +31,7 @@ def user_account() -> UserAccountRO:
     "/account",
     description="계정 추가 연동",
 )
-def user_add_account(type: Literal["naver", "google"]):
+def user_add_account(type: Literal["google"]):
     pass
 
 

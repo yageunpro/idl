@@ -30,8 +30,8 @@ def calendar_schedule_delete():
 def calendar_schedule_list(
     start: datetime = datetime.now(),
     end: datetime = datetime.now() + timedelta(days=365),
-    page: int = 1,
-    limit: int = 10,
+    page_token: str | None = None,
+    limit: int | None = 10,
 ) -> ScheduleListRO:
     pass
 

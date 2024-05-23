@@ -9,9 +9,9 @@ from pydantic import AnyHttpUrl
 from .error import ErrAlreadyConfirmed
 from .request import (
     AppointmentAddRQ,
-    AppointmentConfirm,
+    AppointmentConfirmRQ,
     AppointmentEditRQ,
-    AppointmentJoinNonmember,
+    JoinNonmemberRQ,
 )
 from .response import AppointmentListRO, AppointmentRO
 
@@ -40,8 +40,8 @@ def appointment_add(req: AppointmentAddRQ):
 )
 def appointment_list(
     type: AppointmentStatus,
-    page: int = 1,
-    limit: int = 10,
+    page_token: str | None = None,
+    limit: int | None = 10,
 ) -> AppointmentListRO:
     pass
 
@@ -84,9 +84,7 @@ def appointment_join(id: UUID) -> AppointmentRO:
     description="약속 참가",
     responses={400: merge_errs(ErrAlreadyConfirmed)},
 )
-def appointment_join_nonmember(
-    id: UUID, req: AppointmentJoinNonmember
-) -> AppointmentRO:
+def appointment_join_nonmember(id: UUID, req: JoinNonmemberRQ) -> AppointmentRO:
     pass
 
 
@@ -104,5 +102,5 @@ def appointment_get_recommend(id: UUID) -> list[datetime]:
     description="약속 확정",
     responses={400: merge_errs(ErrAlreadyConfirmed)},
 )
-def appointment_confirm(id: UUID, req: AppointmentConfirm):
+def appointment_confirm(id: UUID, req: AppointmentConfirmRQ):
     pass

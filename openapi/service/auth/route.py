@@ -11,35 +11,11 @@ router = APIRouter(
 
 
 @router.get(
-    "/oauth/naver",
-    description="네이버 oauth request, 자동 가입 & 로그인 처리",
-    response_class=responses.RedirectResponse,
-)
-def auth_oauth_naver(ref: str | None = None):
-    pass
-
-
-@router.get(
     "/oauth/google",
-    description="구글 oauth request, 자동 가입 & 로그인 처리",
+    description="구글 oauth req, ref 값으로 redirect 될 페이지 설정 가능",
     response_class=responses.RedirectResponse,
 )
 def auth_oauth_google(ref: str | None = None):
-    pass
-
-
-@router.get(
-    "/callback/naver",
-    description="네이버 oauth callback (server-side)",
-    response_class=responses.RedirectResponse,  # accessToken / refreshToken Header 로 추가하기
-)
-def auth_callback_naver(
-    code: str,
-    state: str,
-    error: str | None = None,
-    error_description: str | None = None,
-):
-    # https://developers.naver.com/docs/login/devguide/devguide.md#3-4-3-%EB%84%A4%EC%9D%B4%EB%B2%84-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%97%B0%EB%8F%99-%EA%B2%B0%EA%B3%BC-callback-%EC%A0%95%EB%B3%B4
     pass
 
 

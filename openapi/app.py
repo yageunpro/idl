@@ -1,5 +1,6 @@
 import dto.error as error
 import service
+import service.location
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.openapi.models import Server
 from fastapi.responses import RedirectResponse
@@ -27,6 +28,7 @@ app.include_router(service.auth.router)
 secure_router = APIRouter(dependencies=[Depends(accessToken), Depends(refreshToken)])
 secure_router.include_router(service.appointment.router)
 secure_router.include_router(service.calendar.router)
+secure_router.include_router(service.location.router)
 secure_router.include_router(service.user.router)
 
 app.include_router(secure_router)

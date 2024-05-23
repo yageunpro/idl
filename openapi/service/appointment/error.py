@@ -4,7 +4,7 @@ from pydantic import Field
 
 class ErrAlreadyConfirmed(BaseError):
     """
-    이미 완료된 약속
+    이미 확정된 약속
     """
 
     _description = "When appointment already confirmed"
