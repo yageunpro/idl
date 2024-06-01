@@ -1,5 +1,7 @@
 .PHONY: dependency, genrate, run
 
+all: dependency generate
+
 dependency:
 	@pip install fastapi uvicorn pyyaml "pydantic[email]"
 
@@ -8,5 +10,3 @@ generate:
 
 run:
 	uvicorn --app-dir ./openapi --reload app:app
-
-all: generate
