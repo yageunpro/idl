@@ -25,8 +25,11 @@ class AppointmentEditRQ(BaseModel):
 
 
 class JoinNonmemberRQ(BaseModel):
+    class ScheduleWithoutId(Schedule):
+        id: None = Field(exclude=True)
+
     username: str = Field(description="이름")
-    scheduleList: list[Schedule] = Field(description="일정 리스트")
+    scheduleList: list[ScheduleWithoutId] = Field(description="일정 리스트")
 
 
 class AppointmentConfirmRQ(BaseModel):

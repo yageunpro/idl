@@ -8,8 +8,9 @@ from fastapi.security import APIKeyHeader
 
 app = FastAPI(
     title="Owl API",
-    version="0.0.1-alpha",
+    version="0.1.0",
     servers=[
+        Server(url="https://yageun.pro", description="prod server").model_dump(),
         Server(url="http://127.0.0.1:8000", description="dev server").model_dump(),
     ],
     responses={
