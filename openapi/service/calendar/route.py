@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
+from uuid import UUID
 
-import dto.error as error
-from fastapi import APIRouter, responses
+from fastapi import APIRouter
 
+from .request import ScheduleAddRQ
 from .response import ScheduleAddRO, ScheduleInfoRO, ScheduleListRO
 
 router = APIRouter(
@@ -12,17 +13,17 @@ router = APIRouter(
 
 
 @router.post("/schedule", description="일정 추가")
-def calendar_schedule_add() -> ScheduleAddRO:
+def calendar_schedule_add(req: ScheduleAddRQ) -> ScheduleAddRO:
     pass
 
 
 @router.get("/schedule/{id}", description="일정 세부 정보")
-def calendar_schedule_info() -> ScheduleInfoRO:
+def calendar_schedule_info(id: UUID) -> ScheduleInfoRO:
     pass
 
 
 @router.delete("/schedule/{id}", description="일정 삭제")
-def calendar_schedule_delete():
+def calendar_schedule_delete(id: UUID):
     pass
 
 
