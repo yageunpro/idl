@@ -29,8 +29,8 @@ def calendar_schedule_delete(id: UUID):
 
 @router.get("/schedule/list", description="전체 일정 리스트")
 def calendar_schedule_list(
-    start: datetime = datetime.now(),
-    end: datetime = datetime.now() + timedelta(days=365),
+    start: datetime,
+    end: datetime,
     page_token: str | None = None,
     limit: int | None = 10,
 ) -> ScheduleListRO:

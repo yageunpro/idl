@@ -22,7 +22,7 @@ router = APIRouter(
 
 
 @router.post("", description="약속 추가")
-def appointment_add(req: AppointmentAddRQ):
+def appointment_add(req: AppointmentAddRQ) -> AppointmentRO:
     pass
 
 
